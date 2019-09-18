@@ -1,7 +1,7 @@
 import FetchData from "./FetchData";
 const uri =
   "https://croitorielarodica.netlify.com/.netlify/functions/express/mongoose";
-// const uri = "http://localhost:8000/.netlify/functions/express/mongoose";
+// const uri = "http://localhost:8888/.netlify/functions/express/mongoose";
 // const uri = "http://localhost:9000/.netlify/functions/express/mongoose";
 
 const LOGIN = action => async dispatch => {
@@ -106,6 +106,7 @@ const GetPostsData = payload => async dispatch => {
     uri
   )
     .then(data => {
+      // console.log("Fetch response: " + data);
       // console.log(data.payload);
       dispatch({
         action: "GetPostsData",

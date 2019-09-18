@@ -3,29 +3,17 @@
 const express = require("express");
 const serverless = require("serverless-http");
 const app = express();
-// require("dotenv").config();
+require("dotenv").config();
 // const fs = require("fs");
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-const options = {
-  promiseLibrary: global.Promise,
-  useNewUrlParser: true
-};
+
 const Schema = mongoose.Schema;
-mongoose.set("useCreateIndex", true);
+// mongoose.set("useCreateIndex", true);
 const uri = process.env.REACT_APP_GMAIL_MONGO_URI;
 // console.log("URI", uri);
 
-mongoose.connect(uri, options);
-let db = mongoose.connection;
-mongoose.pluralize(null);
-db.on("error", function(err) {
-  console.log(err);
-});
-db.once("open", function() {
-  console.log("connected to mongo db");
-});
 // schema
 
 const Carosel = mongoose.model(
@@ -50,71 +38,71 @@ const Carosel = mongoose.model(
   })
 );
 
-const OrderAddress = mongoose.model(
-  "OrderAddress",
-  new Schema({
-    street_name: { type: String, required: true },
-    street_number: { type: Number, required: true },
-    town: { type: String, required: true },
-    county: { type: String, required: true },
-    country: { type: String, required: true, default: "Romania" }
-  })
-);
+// const OrderAddress = mongoose.model(
+//   "OrderAddress",
+//   new Schema({
+//     street_name: { type: String, required: true },
+//     street_number: { type: Number, required: true },
+//     town: { type: String, required: true },
+//     county: { type: String, required: true },
+//     country: { type: String, required: true, default: "Romania" }
+//   })
+// );
 
-const Order = mongoose.model(
-  "Orders",
-  new Schema({
-    //_id: mongoose.Types.ObjectId,
-    user_who_ordered: {
-      type: Schema.Types.ObjectId,
-      ref: "Users",
-      required: true
-    },
-    ordered_articles: [
-      { type: Schema.Types.ObjectId, ref: "Articles", required: true }
-    ],
-    order_address: {
-      type: Schema.Types.ObjectId,
-      ref: "OrderAddress",
-      required: true
-    },
-    order_user_extra_info: String,
-    order_date: { type: Date, default: Date.now() },
-    order_status: { type: Schema.Types.ObjectId, ref: "OrderStatus" },
-    order_status_details: String
-  })
-);
+// const Order = mongoose.model(
+//   "Orders",
+//   new Schema({
+//     //_id: mongoose.Types.ObjectId,
+//     user_who_ordered: {
+//       type: Schema.Types.ObjectId,
+//       ref: "Users",
+//       required: true
+//     },
+//     ordered_articles: [
+//       { type: Schema.Types.ObjectId, ref: "Articles", required: true }
+//     ],
+//     order_address: {
+//       type: Schema.Types.ObjectId,
+//       ref: "OrderAddress",
+//       required: true
+//     },
+//     order_user_extra_info: String,
+//     order_date: { type: Date, default: Date.now() },
+//     order_status: { type: Schema.Types.ObjectId, ref: "OrderStatus" },
+//     order_status_details: String
+//   })
+// );
 
-const OrderStatus = mongoose.model(
-  "OrderStatus",
-  new Schema({
-    //_id: mongoose.Types.ObjectId,
-    status_name: {
-      type: String,
-      uppercase: true,
-      unique: true,
-      required: true
-    },
-    addedOn: { type: Date, default: Date.now() }
-  })
-);
+// const OrderStatus = mongoose.model(
+//   "OrderStatus",
+//   new Schema({
+//     //_id: mongoose.Types.ObjectId,
+//     status_name: {
+//       type: String,
+//       uppercase: true,
+//       unique: true,
+//       required: true
+//     },
+//     addedOn: { type: Date, default: Date.now() }
+//   })
+// );
 
-const UnitatiMasuraPetruPreturi = mongoose.model(
-  "UnitatiMasuraPetruPreturi",
-  new Schema({
-    //_id: mongoose.Types.ObjectId,
-    unitate_masura: {
-      type: String,
-      required: true,
-      uppercase: true,
-      unique: true
-    },
-    addedOn: {
-      type: Date,
-      default: Date.now()
-    }
-  })
-);
+// const UnitatiMasuraPetruPreturi = mongoose.model(
+//   "UnitatiMasuraPetruPreturi",
+//   new Schema({
+//     //_id: mongoose.Types.ObjectId,
+//     unitate_masura: {
+//       type: String,
+//       required: true,
+//       uppercase: true,
+//       unique: true
+//     },
+//     addedOn: {
+//       type: Date,
+//       default: Date.now()
+//     }
+//   })
+// );
 
 const ArticleSchema = new Schema({
   //_id: mongoose.Types.ObjectId,
@@ -256,14 +244,14 @@ currentPost={
 };
 const Comment = mongoose.model("Comments", CommentSchema);
 
-const AccountTypes = new mongoose.model(
-  "AccountTypes",
-  new Schema({
-    // id: Schema.Types.ObjectId,
-    account_type: { type: String, unique: true, ref: "Users" },
-    addedOn: { type: Date, default: Date.now() }
-  })
-);
+// const AccountTypes = new mongoose.model(
+//   "AccountTypes",
+//   new Schema({
+//     // id: Schema.Types.ObjectId,
+//     account_type: { type: String, unique: true, ref: "Users" },
+//     addedOn: { type: Date, default: Date.now() }
+//   })
+// );
 
 const UserSchema = new mongoose.Schema({
   //_id: mongoose.Types.ObjectId,
@@ -391,21 +379,34 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-var walkSync = function(dir, filelist) {
-  var fs = fs || require("fs"),
-    files = fs.readdirSync(dir);
-  filelist = filelist || [];
-  files.forEach(function(file) {
-    if (fs.statSync(dir + file).isDirectory()) {
-      filelist = walkSync(dir + file + "/", filelist);
-    } else {
-      filelist.push(file);
-    }
-  });
-  return filelist;
-};
+// var walkSync = function(dir, filelist) {
+//   var fs = fs || require("fs"),
+//     files = fs.readdirSync(dir);
+//   filelist = filelist || [];
+//   files.forEach(function(file) {
+//     if (fs.statSync(dir + file).isDirectory()) {
+//       filelist = walkSync(dir + file + "/", filelist);
+//     } else {
+//       filelist.push(file);
+//     }
+//   });
+//   return filelist;
+// };
 
 /* de aici app use  */
+const options = {
+  // promiseLibrary: global.Promise,
+  useNewUrlParser: true
+};
+mongoose.connect(uri, options);
+let db = mongoose.connection;
+mongoose.pluralize(null);
+db.on("error", function(err) {
+  console.log(err);
+});
+db.once("open", function() {
+  console.log("connected to mongo db");
+});
 
 app.use("/.netlify/functions/express/mongoose", (req, res) => {
   const { action, payload } = req.body;
@@ -434,14 +435,18 @@ app.use("/.netlify/functions/express/mongoose", (req, res) => {
       user.loginAttempt({ ...req.body.payload }).then(data => res.send(data));
       break;
     }
+    //"proxy": "https://croitorielarodica.netlify.com/.netlify/functions/",
     case "GetPostsData": {
-      console.log("GetPostsData");
+      console.log("--**--GetPostsData:" + req.body.payload);
       const { allPosts, count } = req.body.payload;
-      // console.log(allPosts, count);
-      GetPostsData(allPosts, count).then(data => {
-        // console.log(data);
-        res.send(data);
-      });
+      GetPostsData(allPosts, count)
+        .then(data => {
+          console.log("---****----POSTS DATA: ", data);
+          res.send(data);
+        })
+        .catch(err => {
+          console.log("GetPostsData Error: ", err);
+        });
       break;
     }
     case "GetCategoriesList": {
@@ -513,7 +518,7 @@ async function GetHomeCaroselData() {
 
 const GetPostsData = (allPosts, count) =>
   new Promise((resolve, reject) => {
-    console.log(allPosts, count);
+    // console.log(allPosts, count);
     if (!allPosts) {
       Post.find({})
         .sort({ date: -1 })
@@ -648,7 +653,7 @@ const SendEmail = payload =>
         //res.send(JSON.stringify("Message sent: " + response.message));
         let retMsg = { msesage: "Message sent" };
         resolve(JSON.stringify(retMsg));
-        console.log(retMsg);
+        // console.log(retMsg);
       }
       smtpTransport.close();
     });

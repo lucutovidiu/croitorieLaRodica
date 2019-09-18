@@ -6,8 +6,12 @@ export default async function(data, uri) {
     },
     method: "POST",
     body: JSON.stringify(data)
-  }).then(response => {
-    return response.json();
-  });
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => {
+      console.log("Fetch Error: " + err);
+    });
   return result;
 }
