@@ -1,4 +1,4 @@
-import FetchData from "./FetchData";
+import FetchData, {getCaroselData, getPostsData} from "./FetchData";
 const uri =
   "https://croitorielarodica.netlify.com/.netlify/functions/express/mongoose";
 // const uri = "http://localhost:8888/.netlify/functions/express/mongoose";
@@ -59,7 +59,7 @@ const GetHomeCaroselData = () => async dispatch => {
       HomeCarosel: { loading: true, requestedData: true }
     }
   });
-  FetchData(
+ /* FetchData(
     { action: "GetHomeCaroselData", payload: "GetHomeCaroselData" },
     uri
   )
@@ -83,7 +83,21 @@ const GetHomeCaroselData = () => async dispatch => {
           HomeCarosel: { loading: false, caroselData: error }
         }
       });
-    });
+    });*/
+  getCaroselData()
+    .then(data => {
+      dispatch({
+        action: "GetHomeCaroselData",
+        payload: {
+          HomeCarosel: {
+            loading: false,
+            caroselData: data.payload,
+            requestedData: true
+          }
+        }
+      });
+    })
+
 };
 const GetPostsData = payload => async dispatch => {
   //posts count Number and allposts: boolean
@@ -98,7 +112,7 @@ const GetPostsData = payload => async dispatch => {
       }
     }
   });
-  FetchData(
+ /* FetchData(
     {
       action: "GetPostsData",
       payload
@@ -133,6 +147,23 @@ const GetPostsData = payload => async dispatch => {
             postsData: error,
             requestedData: true,
             postsRequestedCount: payload.count
+          }
+        }
+      });
+    }); */
+  getPostsData()
+    .then(data => {
+      dispatch({
+        action: "GetPostsData",
+        payload: {
+          Posts: {
+            loading: false,
+            postsData: data.payload.posts,
+            requestedData: true,
+            postsRequestedCount: payload.count
+          },
+          comments: {
+            commentsData: data.payload.comments
           }
         }
       });

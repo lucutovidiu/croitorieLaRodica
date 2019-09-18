@@ -13,7 +13,19 @@ const Schema = mongoose.Schema;
 // mongoose.set("useCreateIndex", true);
 const uri = process.env.REACT_APP_GMAIL_MONGO_URI;
 // console.log("URI", uri);
-
+const options = {
+  // promiseLibrary: global.Promise,
+  useNewUrlParser: true
+};
+mongoose.connect(uri, options);
+let db = mongoose.connection;
+mongoose.pluralize(null);
+db.on("error", function(err) {
+  console.log(err);
+});
+db.once("open", function() {
+  console.log("connected to mongo db");
+});
 // schema
 
 const Carosel = mongoose.model(
@@ -38,71 +50,71 @@ const Carosel = mongoose.model(
   })
 );
 
-// const OrderAddress = mongoose.model(
-//   "OrderAddress",
-//   new Schema({
-//     street_name: { type: String, required: true },
-//     street_number: { type: Number, required: true },
-//     town: { type: String, required: true },
-//     county: { type: String, required: true },
-//     country: { type: String, required: true, default: "Romania" }
-//   })
-// );
+const OrderAddress = mongoose.model(
+  "OrderAddress",
+  new Schema({
+    street_name: { type: String, required: true },
+    street_number: { type: Number, required: true },
+    town: { type: String, required: true },
+    county: { type: String, required: true },
+    country: { type: String, required: true, default: "Romania" }
+  })
+);
 
-// const Order = mongoose.model(
-//   "Orders",
-//   new Schema({
-//     //_id: mongoose.Types.ObjectId,
-//     user_who_ordered: {
-//       type: Schema.Types.ObjectId,
-//       ref: "Users",
-//       required: true
-//     },
-//     ordered_articles: [
-//       { type: Schema.Types.ObjectId, ref: "Articles", required: true }
-//     ],
-//     order_address: {
-//       type: Schema.Types.ObjectId,
-//       ref: "OrderAddress",
-//       required: true
-//     },
-//     order_user_extra_info: String,
-//     order_date: { type: Date, default: Date.now() },
-//     order_status: { type: Schema.Types.ObjectId, ref: "OrderStatus" },
-//     order_status_details: String
-//   })
-// );
+const Order = mongoose.model(
+  "Orders",
+  new Schema({
+    //_id: mongoose.Types.ObjectId,
+    user_who_ordered: {
+      type: Schema.Types.ObjectId,
+      ref: "Users",
+      required: true
+    },
+    ordered_articles: [
+      { type: Schema.Types.ObjectId, ref: "Articles", required: true }
+    ],
+    order_address: {
+      type: Schema.Types.ObjectId,
+      ref: "OrderAddress",
+      required: true
+    },
+    order_user_extra_info: String,
+    order_date: { type: Date, default: Date.now() },
+    order_status: { type: Schema.Types.ObjectId, ref: "OrderStatus" },
+    order_status_details: String
+  })
+);
 
-// const OrderStatus = mongoose.model(
-//   "OrderStatus",
-//   new Schema({
-//     //_id: mongoose.Types.ObjectId,
-//     status_name: {
-//       type: String,
-//       uppercase: true,
-//       unique: true,
-//       required: true
-//     },
-//     addedOn: { type: Date, default: Date.now() }
-//   })
-// );
+const OrderStatus = mongoose.model(
+  "OrderStatus",
+  new Schema({
+    //_id: mongoose.Types.ObjectId,
+    status_name: {
+      type: String,
+      uppercase: true,
+      unique: true,
+      required: true
+    },
+    addedOn: { type: Date, default: Date.now() }
+  })
+);
 
-// const UnitatiMasuraPetruPreturi = mongoose.model(
-//   "UnitatiMasuraPetruPreturi",
-//   new Schema({
-//     //_id: mongoose.Types.ObjectId,
-//     unitate_masura: {
-//       type: String,
-//       required: true,
-//       uppercase: true,
-//       unique: true
-//     },
-//     addedOn: {
-//       type: Date,
-//       default: Date.now()
-//     }
-//   })
-// );
+const UnitatiMasuraPetruPreturi = mongoose.model(
+  "UnitatiMasuraPetruPreturi",
+  new Schema({
+    //_id: mongoose.Types.ObjectId,
+    unitate_masura: {
+      type: String,
+      required: true,
+      uppercase: true,
+      unique: true
+    },
+    addedOn: {
+      type: Date,
+      default: Date.now()
+    }
+  })
+);
 
 const ArticleSchema = new Schema({
   //_id: mongoose.Types.ObjectId,
@@ -244,14 +256,14 @@ currentPost={
 };
 const Comment = mongoose.model("Comments", CommentSchema);
 
-// const AccountTypes = new mongoose.model(
-//   "AccountTypes",
-//   new Schema({
-//     // id: Schema.Types.ObjectId,
-//     account_type: { type: String, unique: true, ref: "Users" },
-//     addedOn: { type: Date, default: Date.now() }
-//   })
-// );
+const AccountTypes = new mongoose.model(
+  "AccountTypes",
+  new Schema({
+    // id: Schema.Types.ObjectId,
+    account_type: { type: String, unique: true, ref: "Users" },
+    addedOn: { type: Date, default: Date.now() }
+  })
+);
 
 const UserSchema = new mongoose.Schema({
   //_id: mongoose.Types.ObjectId,
@@ -394,19 +406,6 @@ app.use(cors());
 // };
 
 /* de aici app use  */
-const options = {
-  // promiseLibrary: global.Promise,
-  useNewUrlParser: true
-};
-mongoose.connect(uri, options);
-let db = mongoose.connection;
-mongoose.pluralize(null);
-db.on("error", function(err) {
-  console.log(err);
-});
-db.once("open", function() {
-  console.log("connected to mongo db");
-});
 
 app.use("/.netlify/functions/express/mongoose", (req, res) => {
   const { action, payload } = req.body;
@@ -437,11 +436,11 @@ app.use("/.netlify/functions/express/mongoose", (req, res) => {
     }
     //"proxy": "https://croitorielarodica.netlify.com/.netlify/functions/",
     case "GetPostsData": {
-      console.log("--**--GetPostsData:" + req.body.payload);
       const { allPosts, count } = req.body.payload;
+      // console.log("--**--GetPostsData:---" + allPosts, "---", count);
       GetPostsData(allPosts, count)
         .then(data => {
-          console.log("---****----POSTS DATA: ", data);
+          // console.log("---****----POSTS DATA: ", data);
           res.send(data);
         })
         .catch(err => {
