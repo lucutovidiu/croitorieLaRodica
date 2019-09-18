@@ -56,7 +56,7 @@ const ModalComponent = props => {
   // console.log(state);
 
   useEffect(() => {
-    window.history.pushState("", "", `/Articol/${_id}`);
+    // window.history.pushState("", "", `/Articol/${_id}`);
     if (
       commentsDataToSendToStore.anyComments &&
       liksDataToSendToStore.anyLikesData
@@ -224,9 +224,8 @@ const ModalComponent = props => {
     }
   `;
   const BackgroundImage = styled.div`
-    // border: 3px solid green;
+     //border: 3px solid green;
 
-    display: inline-block;
     // background-position: top center;
     // width: 100%;
     // min-height: 140vh;
@@ -245,33 +244,39 @@ const ModalComponent = props => {
     // @media all and (max-width: 501px) {
     //   background-size: cover;
     // }
+    height: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    
     img {
+      margin-top: 1rem;
       width: 100%;
-      max-width: 400px;
-      height: auto;
+      //max-width: 400px;
+      //height: auto;
       object-position: 80% 50%;
       @media all and (min-width: 1200px) {
-        height: 85%;
+        //height: 85%;
         object-position: 80% 50%;
         object-fit: cover;
       }
       @media all and (min-width: 991px) and (max-width: 1200px) {
-        height: 500px;
+        //height: 500px;
         object-position: 80% 50%;
         object-fit: cover;
       }
       @media all and (min-width: 576px) and (max-width: 991px) {
-        height: 400px;
+        //height: 400px;
         object-position: 80% 40%;
         object-fit: cover;
       }
       @media all and (min-width: 501px) and (max-width: 576px) {
-        height: 500px;
+        //height: 500px;
         object-position: 80% 50%;
         object-fit: cover;
       }
       @media all and (max-width: 501px) {
-        height: 450px;
+        //height: 450px;
         object-fit: cover;
         object-position: 50% 60%;
       }

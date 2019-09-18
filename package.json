@@ -34,14 +34,16 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "serverless-http": "^2.0.2",
-    "styled-components": "^4.3.1"
+    "styled-components": "^4.3.1",
+    "babel-loader": "8.1.0",
+    "webpack": "4.42.0"
   },
   "scripts": {
     "start:lambda": "netlify-lambda serve functions",
     "build": "react-scripts build",
     "build:lambda": "netlify-lambda build functions",
     "prod": "npm run build; npm run build:lambda",
-    "start": "react-scripts start",
+    "start": "react-scripts start --host 0.0.0.0",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
