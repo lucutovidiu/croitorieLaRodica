@@ -272,7 +272,9 @@ const PostsCard = props => {
         </Wrapper>
       </>
     );
-  } catch {}
+  } catch(err) {
+    console.log(err)
+  }
 };
 
 export default PostsCard;

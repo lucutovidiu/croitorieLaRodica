@@ -11,8 +11,9 @@ const PostsComponent = () => {
   const state = useContext(Context);
   const dispatch = useContext(DispatchContext);
   useEffect(() => {
-    if (typeof state.Posts !== "undefined" && !state.Posts.requestedData)
+    if (typeof state.Posts !== "undefined" && !state.Posts.requestedData){
       dispatch(GetPostsData({ count: 10, allPosts: false }));
+    }
   }, [dispatch, state]);
   const Wrapper = styled.div`
     width: 100%;
@@ -32,7 +33,7 @@ const PostsComponent = () => {
                 <Spinner animation="border" variant="primary" />
               </Col>
             ) : (
-              typeof state.Posts !== "undefined" &&
+              typeof state.Posts !== "undefined" && typeof state.Posts.postsData !== "undefined" &&
               state.Posts.postsData.map((item, index) => (
                 <PostsCard key={index} state={state} props={item} />
               ))

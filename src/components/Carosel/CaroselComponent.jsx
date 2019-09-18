@@ -22,7 +22,6 @@ function useFetch(context, dispatch) {
     ) {
       setState({ loading: true, data: null, tries: state.tries + 1 });
       if (context.HomeCarosel.requestedData === false) {
-        console.log("fetch data");
         dispatch(GetHomeCaroselData());
       }
     } else {
@@ -68,49 +67,47 @@ const CaroselComponent = props => {
   // console.log("state....", state.HomeCarosel.caroselData);
   try {
     return (
-      <Container fluid className="">
-        <Row>
-          <Col className="p-0">
-            <Wrapper>
-              <Carousel
-                activeIndex={index}
-                direction={direction}
-                onSelect={handleSelect}
-              >
-                {loading ? (
-                  tries < 150 ? (
-                    <Col
-                      style={{ height: "300px" }}
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <Spinner animation="border" variant="primary" />
-                    </Col>
+        <Container fluid className="">
+          <Row>
+            <Col className="p-0">
+              <Wrapper>
+                <Carousel
+                    activeIndex={index}
+                    direction={direction}
+                    onSelect={handleSelect}
+                >
+                  {loading ? (
+                      tries < 150 ? (
+                          <Col
+                              style={{ height: "300px" }}
+                              className="d-flex justify-content-center align-items-center"
+                          >
+                            <Spinner animation="border" variant="primary" />
+                          </Col>
+                      ) : (
+                          <Col
+                              style={{ height: "300px" }}
+                              className="d-flex justify-content-center align-items-center"
+                          >
+                            <p className="lead">Server Loading Problem ...</p>
+                          </Col>
+                      )
                   ) : (
-                    <Col
-                      style={{ height: "300px" }}
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <p className="lead">Server Loading Problem ...</p>
-                    </Col>
-                  )
-                ) : (
-                  data.map(item => {
-                    return (
-                      <Carousel.Item key={item._id}>
-                        <CaroselImage imgArr={item.src} />
-                        <Carousel.Caption>
-                          <h3>{item.title}</h3>
-                          <p>{item.description}</p>
-                        </Carousel.Caption>
-                      </Carousel.Item>
-                    );
-                  })
-                )}
-              </Carousel>
-            </Wrapper>
-          </Col>
-        </Row>
-      </Container>
+                      data.map(item => (
+                          <Carousel.Item key={item._id}>
+                            <CaroselImage imgArr={item.src} />
+                            <Carousel.Caption>
+                              <h3>{item.title}</h3>
+                              <p>{item.description}</p>
+                            </Carousel.Caption>
+                          </Carousel.Item>
+                      ))
+                  )}
+                </Carousel>
+              </Wrapper>
+            </Col>
+          </Row>
+        </Container>
     );
   } catch {
     return (
