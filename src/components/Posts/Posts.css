@@ -1,0 +1,35 @@
+.user-comment-input-field::placeholder {
+  font-size: 0.7rem;
+}
+.user-comment-input-field {
+  padding: 0 0 0.6rem 0;
+  width: 165px;
+  border: none;
+  outline: none;
+  border-bottom: 3px solid #34495e;
+  transition: border linear 0.5s;
+  font-size: 0.5rem;
+}
+.user-comment-input-field:focus {
+  outline: none;
+  border-bottom: 3px solid #3498db;
+}
+
+@media all and (min-width: 380px) and (max-width: 500px) {
+  .user-comment-input-field {
+    width: 170px;
+    font-size: 0.7rem;
+  }
+  .user-comment-input-field::placeholder {
+    font-size: 0.9rem;
+  }
+}
+@media all and (min-width: 500px) {
+  .user-comment-input-field {
+    width: 180px;
+    font-size: 0.9rem;
+  }
+  .user-comment-input-field::placeholder {
+    font-size: 0.9rem;
+  }
+}

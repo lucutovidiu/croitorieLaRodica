@@ -1,0 +1,7 @@
+body {
+  /* background-color: #ffe6cd; */
+}
+.user-comment-input-field::placeholder {
+  background-size: cover;
+  background-position: center;
+}
